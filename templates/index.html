@@ -132,7 +132,7 @@
     <div class="container">
         <h1 id="title">Shortly</h1>
         <form action="/shortly" method="post">
-            <!-- {% csrf_token %} -->
+             {% csrf_token %}
             <label for="link">Shorten a long URL</label>
             <input type="text" name="link" id="link" placeholder="Enter long link here">
             <label for="custom">Customize your link</label>
