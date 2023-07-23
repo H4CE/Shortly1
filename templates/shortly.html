@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- {% load static %} -->
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <title>Shortly</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,700;1,400&display=swap');
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Nunito', sans-serif;
+            color: #fff;
+            margin: 0;
+            padding: 20px;
+            height: 100vh;
+            background-color: #000;
+            position: relative;
+            overflow: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background-image: url("{% static 'myapp/texture.png' %}");
+            background-repeat: repeat;
+            background-size: cover;
+            filter: blur(5px);
+            z-index: -1;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 400px;
+            padding: 20px;
+            background-color: #333;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            text-decoration: none;
+
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        form {
+            width: 100%;
+            text-align: center;
+        }
+
+        input[type='text'] {
+            display: block;
+            width: 90%;
+            padding: 10px;
+            font-size: 20px;
+            border: 1px solid #474747;
+            border-radius: 4px;
+            margin-bottom: 22px;
+            background-color: #333;
+            color: #76e99f;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        .copy-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: fit-content;
+            background-color: #ff3d00;
+            color: #fff;
+            border: 0;
+            border-radius: 6px;
+            padding: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        .copy-btn a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .copy-btn:hover {
+            background-color: #d50000;
+        }
+
+        label {
+            text-align: left;
+            width: 100%;
+            margin-bottom: 5px;
+            color: #adadb2;
+        }
+
+        .buttons-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .copy-btn a,
+        .go-to-home-btn {
+            display: block;
+            width: 100%;
+            height: 100%;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        a.copy-btn {
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <label for="long-url">Your Long URL</label>
+        <input type="text" id="long-url" value={{ link }}>
+        <label for="short-url">Shortly URL</label>
+        <input type="text" id="short-url" value="abcd/{{ shortLink }}" readonly>
+
+        <!-- Buttons container -->
+        <div class="buttons-container">
+            <div class="copy-btn" id="copy-btn" onclick="copyToClipboard()">
+                <span class="material-icons">content_copy</span>
+                <a href="#" onclick="copyToClipboard()">Copy</a>
+            </div>
+
+            <a href="{% url 'index' %}" class="copy-btn">
+                Shorten another!
+            </a>
+        </div>
+
+        <p id="feedback"></p>
+    </div>
+
+    <script>
+        function copyToClipboard() {
+            const input = document.getElementById('short-url');
+            input.select();
+            input.setSelectionRange(0, 99999); // For mobile devices
+            document.execCommand('copy');
+            showFeedback();
+        }
+
+        function showFeedback() {
+            const feedback = document.getElementById('feedback');
+            try {
+                document.execCommand('copy');
+                feedback.textContent = 'URL copied to clipboard!';
+                feedback.style.color = '#4caf50'; // Green color for success
+            } catch (err) {
+                feedback.textContent = 'Failed to copy URL!';
+                feedback.style.color = '#f44336'; // Red color for failure
+            }
+        }
+    </script>
+</body>
+
+
+</html>
